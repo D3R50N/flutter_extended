@@ -18,6 +18,10 @@ Navigator.of(context).push(...blabla);
 // just do 
 context.goTo(MyPage()); // replaceTo, allTo, back, backTo, ...
 
+"https:myapp.com/link".openUrl(); //open the url in external app
+"A very long text".trunc(10); // "A very ..."
+"Héllo World".noAccent; // "Hello World"
+
 // You have to do all of this
 await Future.delayed(Duration(seconds:10));
 // ..when you can just
@@ -51,8 +55,6 @@ Padding(
 .center()
 .withPadding(6);
 
-"A very long text".trunc(10); // "A very ..."
-"Héllo World".noAccent; // "Hello World"
 
 3.14159.roundTo(2); // 3.14 (natively you have to parse result of .toStringAsFixed)
 3.0.value // 3 (if the decimal is .0, why can't just show the int)
