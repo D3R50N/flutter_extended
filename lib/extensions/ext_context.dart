@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_extended/widgets/alert_dialog.dart';
 import 'package:page_transition/page_transition.dart';
 
+export 'package:page_transition/page_transition.dart';
+
+
 extension ExtContext on BuildContext {
   /// Shortcut to access [MediaQueryData] from the current context.
   MediaQueryData get media => MediaQuery.of(this);
