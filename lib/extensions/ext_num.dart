@@ -12,6 +12,15 @@ extension ExtNum on num {
   /// ```
   Widget get gap => Gap(toDouble());
 
+  /// Creates a circular [BorderRadius] or a uniform [Border] with this number as radius or width.
+  BorderRadius get radius => BorderRadius.circular(toDouble());
+
+  /// Creates a uniform [Border] with this number as width.
+  Border border({Color color = Colors.black}) =>
+      Border.all(color: color, width: toDouble());
+
+  
+
   /// Returns this number clamped to a minimum value [min].
   num clampMin(num min) => this < min ? min : this;
 

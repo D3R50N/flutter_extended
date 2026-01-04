@@ -53,7 +53,7 @@ Padding(
 .styledText(TS.w700.col(red).bg(black), overflow: TextOverflow.ellipsis)
 .onTap(() => print("Tapped"))
 .center()
-.withPadding(6);
+.withPadding(all: 8);
 
 
 3.14159.roundTo(2); // 3.14 (natively you have to parse result of .toStringAsFixed)
@@ -139,8 +139,17 @@ void main() {
   print(style.fontWeight); // FontWeight.w700
 
   // ---- ExtWidget ----
-  final widget = Text("Click me").onTap(() => print("Tapped")).center();
+  final widget = Text("Click me").onTap(() => print("Tapped")).center().container(
+    color: Colors.yellow,
+    padding: EdgeInsets.all(8),
+  );
   final textWidget = "Hello".text(align: TextAlign.center);
+  final animatedText = "$myCounter".animatedText(
+  style: TS.w600.size(20).col(blue),
+  duration: 2.durS,
+  fade:false,
+  ); // changes text with animation when myCounter changes
+
 
   // ---- StyledText ----
   final st = StyledText("Hello Flutter", TS.w500.size(16));

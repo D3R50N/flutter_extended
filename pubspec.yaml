@@ -1,6 +1,6 @@
 name: flutter_extended
 description: "A collection of Dart extensions and helper widgets designed to simplify Flutter development"
-version: 0.0.2
+version: 0.0.3
 homepage: "https://github.com/D3R50N/flutter_extended.git"
 
 environment:

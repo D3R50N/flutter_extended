@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-extension ExtDecoration on InputDecoration {
+extension ExtInputDecoration on InputDecoration {
   /// Returns a new [InputDecoration] created by merging `this`
   /// with the given [other] decoration.
   ///
@@ -73,6 +73,23 @@ extension ExtDecoration on InputDecoration {
       focusedBorder: border,
       errorBorder: border,
       focusedErrorBorder: border,
+    );
+  }
+}
+
+extension ExtBoxDecoration on BoxDecoration {
+  BoxDecoration mergeWith(BoxDecoration? other) {
+    if (other == null) return this;
+
+    return copyWith(
+      color: other.color ?? color,
+      image: other.image ?? image,
+      border: other.border ?? border,
+      borderRadius: other.borderRadius ?? borderRadius,
+      boxShadow: other.boxShadow ?? boxShadow,
+      gradient: other.gradient ?? gradient,
+      backgroundBlendMode: other.backgroundBlendMode ?? backgroundBlendMode,
+      shape: other.shape,
     );
   }
 }

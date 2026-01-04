@@ -158,6 +158,66 @@ extension ExtString on String {
     );
   }
 
+  /// Returns an [AnimatedSwitcher] that animates text changes.
+  AnimatedSwitcher animatedText({
+    TextStyle? style,
+    TextAlign? align,
+    TextOverflow? overflow,
+    int? maxLines,
+    TextDirection? textDirection,
+    Locale? locale,
+    bool? softWrap,
+    StrutStyle? strutStyle,
+    Duration duration = const Duration(milliseconds: 100),
+    Curve switchInCurve = Curves.easeIn,
+    Curve switchOutCurve = Curves.easeOut,
+    bool fade = true,
+    bool scale = true,
+    bool slide = false,
+  }) {
+    return AnimatedSwitcher(
+      duration: duration,
+      transitionBuilder: (child, animation) {
+        final slideOffset =
+            slide
+                ? Tween<Offset>(
+                  begin: const Offset(0.0, 1.0),
+                  end: Offset.zero,
+                ).animate(animation)
+                : null;
+        final slideTransition =
+            slide
+                ? SlideTransition(position: slideOffset!, child: child)
+                : child;
+
+        final fadeTransition =
+            fade
+                ? FadeTransition(opacity: animation, child: slideTransition)
+                : slideTransition;
+
+        final scaleTransition =
+            scale
+                ? ScaleTransition(scale: animation, child: fadeTransition)
+                : fadeTransition;
+        return scaleTransition;
+      },
+      switchInCurve: switchInCurve,
+      switchOutCurve: switchOutCurve,
+      child: Text(
+        this,
+        key: Key(this),
+        style: style,
+        textAlign: align,
+        overflow: overflow,
+        maxLines: maxLines,
+        textDirection: textDirection,
+        locale: locale,
+        softWrap: softWrap,
+        strutStyle: strutStyle,
+      ),
+    );
+  }
+
   /// Wraps the string in a [StyledText] widget with the given [style].
   StyledText styledText(
     TextStyle style, {

@@ -28,6 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<String> items = ["Apple", "Banana", "Cherry", "Date", "Fig"];
   bool showList = true;
 
+  int counter = 0;
+
   @override
   void initState() {
     super.initState();
@@ -47,8 +49,25 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(title: const Text("Flutter Extended Demo")),
       body: sliverScrollView(
         children: [
-          const SizedBox(height: 20),
+          20.gap,
 
+          "$counter"
+              .animatedText(
+                style: TS.bold.size(32).col(Colors.blue),
+                duration: const Duration(milliseconds: 500),
+              )
+              .center(),
+
+          20.gap,
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                counter++;
+              });
+            },
+            child: const Text("Increment Counter"),
+          ).center(),
+          20.gap,
           // Text styled avec extensions
           "Hello *world* #flutter"
               .text()
@@ -57,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   print("Bold tapped: $t");
                 },
               )
-              .withPadding(16),
+              .withPadding(all: 16),
 
           // TextEditingController
           TextField(
@@ -65,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
             decoration: InputDecoration(
               labelText: "Search items",
             ).mergeWith(InputDecoration(border: OutlineInputBorder())),
-          ).withPadding(16),
+          ).withPadding(all: 16),
 
           // Liste filtrée
           ...items.searchText(controller.text).mapIndexed((i, item) {
@@ -78,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           }),
 
-          const SizedBox(height: 20),
+          20.gap,
 
           // Boutons d'action
           Row(
@@ -86,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               "Show Alert"
                   .styledText(TS.col(Colors.white).bg("#000".color))
-                  .withPadding(12)
+                  .withPadding(all: 12)
                   .onTap(() {
                     showDialog(
                       context: context,
@@ -99,24 +118,24 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                     );
                   })
-                  .withPadding(8)
+                  .withPadding(all: 8)
                   .expanded(),
 
               "Random Date"
                   .text()
                   .styled(TS.bg("#24A".color))
-                  .withPadding(12)
+                  .withPadding(all: 12)
                   .onTap(() {
                     final date = DateTime.now().subtract(5.durD);
                     context.snack("Date 5 days ago: ${date.format()}");
                   })
-                  .withPadding(8)
+                  .withPadding(all: 8)
                   .expanded(),
             ],
-          ).withPadding(16),
+          ).withPadding(all: 16),
 
           // Exemple de ExtNum et ExtDuration
-          "Countdown:".styledText(TS.bold.size(18)).withPadding(16),
+          "Countdown:".styledText(TS.bold.size(18)).withPadding(all: 16),
           FutureBuilder(
             future: 5.durS.wait().then((_) => "Done"),
             builder: (context, snapshot) {
@@ -128,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   .styledText(TS.col(blue).size(20))
                   .center();
             },
-          ).withPadding(16),
+          ).withPadding(all: 16),
         ],
       ),
     );
