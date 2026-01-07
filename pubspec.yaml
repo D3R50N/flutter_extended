@@ -1,6 +1,6 @@
 name: flutter_extended
 description: "A collection of Dart extensions and helper widgets designed to simplify Flutter development"
-version: 0.0.3
+version: 0.0.4
 homepage: "https://github.com/D3R50N/flutter_extended.git"
 
 environment:
@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   gap: ^3.0.1
-  intl: ^0.20.2
+  intl: ^0.19.0
   page_transition: ^2.2.1
   timeago: ^3.7.1
   url_launcher: ^6.3.2

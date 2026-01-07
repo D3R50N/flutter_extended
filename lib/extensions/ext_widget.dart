@@ -139,10 +139,11 @@ extension ExtWidget on Widget {
 
   /// Translates this widget by [offset]. Animate if offset changes.
   Widget translated(
-    Offset offset, [
+    double x,
+    double y, [
     Duration duration = const Duration(milliseconds: 300),
   ]) {
-    return AnimatedSlide(offset: offset, duration: duration, child: this);
+    return AnimatedSlide(offset: Offset(x, y), duration: duration, child: this);
   }
 
   /// Fades this widget to the given [opacity]. Animate if opacity changes.

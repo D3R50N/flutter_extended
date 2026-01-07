@@ -1,5 +1,10 @@
 # ChangeLog
 
+## 0.0.4
+
+* Updated `translated` extension method in `ext_widget.dart` to accept `x` and `y` parameters directly for better usability.
+* Downgrade `intl` package to version `0.19.0` for improved compatibility.
+
 ## 0.0.3
 
 * Added more extensions to num, widget, and other classes for enhanced functionality.
