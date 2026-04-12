@@ -1,8 +1,9 @@
 # ChangeLog
 
-## 0.0.5
+## 0.0.6
 
-- Added generic text widget helpers on `ExtAll<T>`: `text`, `animatedText`, and `styledText`.
+- Updated intl to 0.20.2
+
 - Improved `Duration` formatting extensions with `formatDDHHMMSS`, `formatDDHHMM`, `formatSS`, and adaptive `format`.
 - Added iterable utilities: `find` (renamed from `where1`), `toUnique`, and numeric helpers `sum`, `max`, `min`.
 - Extended list-to-layout helpers with `spacing` support for `row`, `column`, and `rowSeparated` layout options.
