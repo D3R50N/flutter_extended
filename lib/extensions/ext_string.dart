@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_extended/utils/color.dart';
-import 'package:flutter_extended/widgets/styled_text.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -132,118 +131,6 @@ extension ExtString on String {
         .toList();
   }
 
-  /// Wraps the string in a standard [Text] widget.
-  Text text({
-    Key? key,
-    TextStyle? style,
-    TextAlign? align,
-    TextOverflow? overflow,
-    int? maxLines,
-    TextDirection? textDirection,
-    Locale? locale,
-    bool? softWrap,
-    StrutStyle? strutStyle,
-  }) {
-    return Text(
-      this,
-      key: key,
-      style: style,
-      textAlign: align,
-      overflow: overflow,
-      maxLines: maxLines,
-      textDirection: textDirection,
-      locale: locale,
-      softWrap: softWrap,
-      strutStyle: strutStyle,
-    );
-  }
-
-  /// Returns an [AnimatedSwitcher] that animates text changes.
-  AnimatedSwitcher animatedText({
-    TextStyle? style,
-    TextAlign? align,
-    TextOverflow? overflow,
-    int? maxLines,
-    TextDirection? textDirection,
-    Locale? locale,
-    bool? softWrap,
-    StrutStyle? strutStyle,
-    Duration duration = const Duration(milliseconds: 100),
-    Curve switchInCurve = Curves.easeIn,
-    Curve switchOutCurve = Curves.easeOut,
-    bool fade = true,
-    bool scale = true,
-    bool slide = false,
-  }) {
-    return AnimatedSwitcher(
-      duration: duration,
-      transitionBuilder: (child, animation) {
-        final slideOffset =
-            slide
-                ? Tween<Offset>(
-                  begin: const Offset(0.0, 1.0),
-                  end: Offset.zero,
-                ).animate(animation)
-                : null;
-        final slideTransition =
-            slide
-                ? SlideTransition(position: slideOffset!, child: child)
-                : child;
-
-        final fadeTransition =
-            fade
-                ? FadeTransition(opacity: animation, child: slideTransition)
-                : slideTransition;
-
-        final scaleTransition =
-            scale
-                ? ScaleTransition(scale: animation, child: fadeTransition)
-                : fadeTransition;
-        return scaleTransition;
-      },
-      switchInCurve: switchInCurve,
-      switchOutCurve: switchOutCurve,
-      child: Text(
-        this,
-        key: Key(this),
-        style: style,
-        textAlign: align,
-        overflow: overflow,
-        maxLines: maxLines,
-        textDirection: textDirection,
-        locale: locale,
-        softWrap: softWrap,
-        strutStyle: strutStyle,
-      ),
-    );
-  }
-
-  /// Wraps the string in a [StyledText] widget with the given [style].
-  StyledText styledText(
-    TextStyle style, {
-    Key? key,
-    TextAlign? align,
-    int? maxLines,
-    TextOverflow? overflow,
-    TextDirection? textDirection,
-    Locale? locale,
-    bool? softWrap,
-    StrutStyle? strutStyle,
-  }) {
-    return StyledText(
-      this,
-      style,
-      key: key,
-      align: align,
-      maxLines: maxLines,
-      overflow: overflow,
-      textDirection: textDirection,
-      locale: locale,
-      softWrap: softWrap,
-      strutStyle: strutStyle,
-    );
-  }
-
   /// Returns a pluralized version of the string based on [length].
   ///
   /// If [showLength] is true, prepends the number.
@@ -267,5 +154,35 @@ extension ExtString on String {
     if (isBlank) return "";
     final trimmed = trim();
     return trimmed[0].toLowerCase() + trimmed.substring(1);
+  }
+
+  /// Returns a lowercase version of this string.
+  ///
+  /// Example:
+  /// ```dart
+  /// "Hello".lower; // "hello"
+  /// ```
+  String get lower => toLowerCase();
+
+  /// Returns an uppercase version of this string.
+  ///
+  /// Example:
+  /// ```dart
+  /// "hello".upper; // "HELLO"
+  /// ```
+  String get upper => toUpperCase();
+
+  /// Returns a random character from this string.
+  ///
+  /// The string is split into characters, shuffled, then the first one is returned.
+  ///
+  /// Example:
+  /// ```dart
+  /// "hello".random(); // could return "h", "e", "l", etc.
+  /// ```
+  String random() {
+    final splitted = split('');
+    splitted.shuffle();
+    return splitted.first;
   }
 }

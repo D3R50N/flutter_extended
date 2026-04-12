@@ -114,7 +114,7 @@ extension ExtList<T> on List<T> {
 extension IterableExt<T> on Iterable<T> {
   /// Returns the first element that matches [test],
   /// or `null` if none match.
-  T? where1(bool Function(T e) test) {
+  T? find(bool Function(T e) test) {
     for (final e in this) {
       if (test(e)) return e;
     }
@@ -166,6 +166,14 @@ extension IterableExt<T> on Iterable<T> {
   T random() {
     return shuffled.first;
   }
+
+  /// Converts this iterable to a [Set].
+  ///
+  /// Example:
+  /// ```dart
+  /// [1, 2, 2, 3].toSet(); // {1, 2, 3}
+  /// ```
+  List<T> toUnique() => Set<T>.from(this).toList();
 }
 
 extension ExtListBool on List<bool> {
@@ -207,12 +215,14 @@ extension ExtListWidget on List<Widget> {
   Widget column({
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.start,
+    double spacing = 0.0,
     MainAxisSize mainAxisSize = MainAxisSize.max,
   }) {
     return Column(
       mainAxisAlignment: mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment,
       mainAxisSize: mainAxisSize,
+      spacing: spacing,
       children: this,
     );
   }
@@ -222,11 +232,13 @@ extension ExtListWidget on List<Widget> {
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
     CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.start,
     MainAxisSize mainAxisSize = MainAxisSize.max,
+    double spacing = 0.0,
   }) {
     return Row(
       mainAxisAlignment: mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment,
       mainAxisSize: mainAxisSize,
+      spacing: spacing,
       children: this,
     );
   }
@@ -255,11 +267,63 @@ extension ExtListWidget on List<Widget> {
   }
 
   /// Builds a [Row] with a separator widget between items.
-  Widget rowSeparated(Widget separator) {
+  Widget rowSeparated(
+    Widget separator, {
+    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
+    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.start,
+    MainAxisSize mainAxisSize = MainAxisSize.max,
+    double spacing = 0.0,
+  }) {
     return Row(
+      mainAxisAlignment: mainAxisAlignment,
+      crossAxisAlignment: crossAxisAlignment,
+      mainAxisSize: mainAxisSize,
+      spacing: spacing,
       children: [
         for (var i = 0; i < length; i++) ...[if (i > 0) separator, this[i]],
       ],
     );
+  }
+}
+
+extension ExtItNum<T extends num> on Iterable<T> {
+  /// Returns the sum of all elements in the iterable.
+  ///
+  /// Example:
+  /// ```dart
+  /// [1, 2, 3].sum(); // 6
+  /// ```
+  num sum() {
+    return fold(0, (prev, el) => prev + el);
+  }
+
+  /// Returns the maximum value in the iterable.
+  ///
+  /// Throws a [StateError] if the iterable is empty.
+  ///
+  /// Example:
+  /// ```dart
+  /// [1, 5, 3].max(); // 5
+  /// ```
+  T max() {
+    if (isEmpty) {
+      throw StateError('Cannot get max of an empty iterable');
+    }
+    return reduce((a, b) => a > b ? a : b);
+  }
+
+  /// Returns the minimum value in the iterable.
+  ///
+  /// Throws a [StateError] if the iterable is empty.
+  ///
+  /// Example:
+  /// ```dart
+  /// [1, 5, 3].min(); // 1
+  /// ```
+  T min() {
+    if (isEmpty) {
+      throw StateError('Cannot get min of an empty iterable');
+    }
+    return reduce((a, b) => a < b ? a : b);
   }
 }

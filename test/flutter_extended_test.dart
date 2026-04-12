@@ -12,6 +12,10 @@ void main() {
       expect(v, e);
     }
 
+    exp('hello'.random(), isIn('hello'));
+    exp(Duration(days: 2, seconds: 65).format, '02:00:01:05');
+    exp(['max', 1, 'ok', 'max', 1, 2].toUnique(), ['max', 1, 'ok', 2]);
+
     exp(5.gap, isA<Gap>());
     exp("2023-10-05".toDate(), isA<DateTime>());
     exp(10.0.value, 10);

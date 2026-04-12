@@ -220,8 +220,10 @@ extension ExtWidget on Widget {
     double? height,
     BoxConstraints? constraints,
     AlignmentGeometry? alignment,
+    Clip clipBehavior = Clip.none,
   }) {
     return Container(
+      clipBehavior: clipBehavior,
       decoration: BoxDecoration(
         color: color,
         image: image,
@@ -249,7 +251,7 @@ extension ExtWidget on Widget {
   /// myWidget.clipped(); // Default radius 8.0
   /// myWidget.clipped(borderRadius: BorderRadius.circular(16));
   /// ```
-  Widget clipped({BorderRadius? borderRadius}) {
+  Widget clipped([BorderRadius? borderRadius]) {
     return ClipRRect(
       borderRadius: borderRadius ?? BorderRadius.circular(8.0),
       child: this,
@@ -257,7 +259,9 @@ extension ExtWidget on Widget {
   }
 
   /// Adds an onTap gesture using [InkWell] over a transparent [Material].
-  Widget onTap(VoidCallback callback) {
+  Widget onTap([VoidCallback? callback]) {
+    if (callback == null) return this;
+
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
@@ -270,7 +274,8 @@ extension ExtWidget on Widget {
   }
 
   /// Adds an onLongPress gesture using [InkWell] over a transparent [Material].
-  Widget onLongPress(VoidCallback callback) {
+  Widget onLongPress([VoidCallback? callback]) {
+    if (callback == null) return this;
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
