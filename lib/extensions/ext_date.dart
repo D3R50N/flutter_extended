@@ -42,6 +42,53 @@ extension ExtDate on DateTime {
     return isSameDay(now);
   }
 
+  /// Returns `true` if this date represents yesterday.
+  bool get isYesterday {
+    final yesterday = DateTime.now().subtract(const Duration(days: 1));
+    return isSameDay(yesterday);
+  }
+
+  /// Returns `true` if this date represents tomorrow.
+  bool get isTomorrow {
+    final tomorrow = DateTime.now().add(const Duration(days: 1));
+    return isSameDay(tomorrow);
+  }
+
+  /// Returns `true` if this date is in the past.
+  bool get isPast => isBefore(DateTime.now());
+
+  /// Returns `true` if this date is in the future.
+  bool get isFuture => isAfter(DateTime.now());
+
+  /// Returns `true` if this date is on a weekend (Saturday or Sunday).
+  bool get isWeekend =>
+      weekday == DateTime.saturday || weekday == DateTime.sunday;
+
+  /// Returns `true` if this date is on a weekday (Monday to Friday).
+  bool get isWeekday => !isWeekend;
+
+  /// Calculates age in full years from this birth date.
+  int get age {
+    final today = DateTime.now();
+    var calculatedAge = today.year - year;
+    if (today.month < month || (today.month == month && today.day < day)) {
+      calculatedAge--;
+    }
+    return calculatedAge;
+  }
+
+  /// Adds [days] days to this date.
+  DateTime addDays(int days) => add(Duration(days: days));
+
+  /// Subtracts [days] days from this date.
+  DateTime subDays(int days) => subtract(Duration(days: days));
+
+  /// Returns the start of this day (00:00:00.000).
+  DateTime get startOfDay => DateTime(year, month, day);
+
+  /// Returns the end of this day (23:59:59.999).
+  DateTime get endOfDay => DateTime(year, month, day, 23, 59, 59, 999);
+
   /// Checks whether this date occurs on the same calendar day
   /// as [other], including year.
   bool isSameDay(DateTime other) => year == other.year && isSameDate(other);

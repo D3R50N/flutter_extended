@@ -32,4 +32,7 @@ extension ExtMap<K, V> on Map<K, V> {
   /// ```
   Map<K, V> whereKey(bool Function(K k) test) =>
       Map.fromEntries(entries.where((e) => test(e.key)));
+
+  /// Returns the value for [key] if it exists and is not null, otherwise returns [defaultValue].
+  V getOr(K key, V defaultValue) => this[key] ?? defaultValue;
 }

@@ -41,3 +41,31 @@ final Color magenta = ColorHex("#FF00FF");
 final Color orange = ColorHex("#FFA500");
 final Color purple = ColorHex("#800080");
 final Color brown = ColorHex("#A52A2A");
+
+extension ExtColor on Color {
+  /// Returns a darker version of this color by [amount] (between 0.0 and 1.0).
+  Color darken([double amount = 0.1]) {
+    assert(amount >= 0 && amount <= 1);
+    final hsl = HSLColor.fromColor(this);
+    final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
+    return hslDark.toColor();
+  }
+
+  /// Returns a lighter version of this color by [amount] (between 0.0 and 1.0).
+  Color lighten([double amount = 0.1]) {
+    assert(amount >= 0 && amount <= 1);
+    final hsl = HSLColor.fromColor(this);
+    final hslLight = hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
+    return hslLight.toColor();
+  }
+
+  /// Converts this color to a hex string (e.g. "#RRGGBB" or "#AARRGGBB").
+  String toHex({bool leadingHashSign = true, bool includeAlpha = false}) {
+    final prefix = leadingHashSign ? '#' : '';
+    final aHex = (a * 255).round().toRadixString(16).padLeft(2, '0');
+    final rHex = (r * 255).round().toRadixString(16).padLeft(2, '0');
+    final gHex = (g * 255).round().toRadixString(16).padLeft(2, '0');
+    final bHex = (b * 255).round().toRadixString(16).padLeft(2, '0');
+    return '$prefix${includeAlpha ? aHex : ''}$rHex$gHex$bHex';
+  }
+}

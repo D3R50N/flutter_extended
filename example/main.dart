@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // Débounce sur le text controller
     controller.debounce((text) {
-      print("Debounced text: $text");
+      debugPrint("Debounced text: $text");
       setState(() {
         showList = text.isNotBlank;
       });
@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
               .text()
               .withBold(
                 onTap: (i, t) {
-                  print("Bold tapped: $t");
+                  debugPrint("Bold tapped: $t");
                 },
               )
               .withPadding(all: 16),

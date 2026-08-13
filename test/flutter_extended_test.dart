@@ -94,20 +94,91 @@ void main() {
 
     // ---- ExtWidget ----
     final widget = Text("Click me").onTap(() => print("Tapped")).center();
+    expect(widget, isA<Widget>());
 
     // ---- StyledText ----
     final st = StyledText("Hello Flutter", TS.w500.size(16));
+    expect(st, isA<StyledText>());
 
     // ---- ExtGlobalKey ----
     final key = GlobalKey();
-    // key.size, key.globalOffset ... would be used in a real widget tree
+    expect(key, isA<GlobalKey>());
 
     // ---- ExtStream ----
     final stream = Stream.value(1).merge(Stream.value(2));
     stream.listen(print); // 1, 2
 
     // ---- ExtText (Text extensions) ----
-    Text("Hello *bold*").withBold();
+    final boldText = Text("Hello *bold*").withBold();
+    expect(boldText, isA<Widget>());
+
+    // ---- debugFlag ----
+    FlutterExtended.debugFlag = "APP";
+    "Test debug".debug("TestTag");
+
+    // ---- ExtNum new helpers ----
+    expect(10.h, isA<SizedBox>());
+    expect(15.w, isA<SizedBox>());
+    expect(8.allPadding, const EdgeInsets.all(8));
+    expect(8.hPadding, const EdgeInsets.symmetric(horizontal: 8));
+    expect(8.vPadding, const EdgeInsets.symmetric(vertical: 8));
+
+    // ---- ExtDate new helpers ----
+    final now = DateTime.now();
+    expect(now.isToday, isTrue);
+    expect(now.subtract(const Duration(days: 1)).isYesterday, isTrue);
+    expect(now.add(const Duration(days: 1)).isTomorrow, isTrue);
+    expect(now.subtract(const Duration(days: 2)).isPast, isTrue);
+    expect(now.add(const Duration(days: 2)).isFuture, isTrue);
+    expect(now.startOfDay.hour, 0);
+    expect(now.endOfDay.hour, 23);
+    expect(DateTime(2000, 1, 1).age, greaterThanOrEqualTo(24));
+    expect(now.addDays(3), isA<DateTime>());
+    expect(now.subDays(3), isA<DateTime>());
+
+    // ---- ExtColor ----
+    final testColor = const Color(0xFF0000FF);
+    expect(testColor.toHex(), "#0000ff");
+    expect(testColor.darken(0.2), isA<Color>());
+    expect(testColor.lighten(0.2), isA<Color>());
+
+    // ---- ExtList new helpers ----
+    expect([1, 2, 3, 4, 5].chunk(2), [
+      [1, 2],
+      [3, 4],
+      [5],
+    ]);
+    expect([1, 2, 3].average(), 2.0);
+    final separatedWidgets = [const Text("A"), const Text("B")].separated(const SizedBox(width: 5));
+    expect(separatedWidgets.length, 3);
+
+    // ---- ExtString new helpers ----
+    expect("test@example.com".isEmail, isTrue);
+    expect("not-an-email".isEmail, isFalse);
+    expect("+33612345678".isPhone, isTrue);
+    expect("John Doe".initials, "JD");
+    expect("Flutter".initials, "FL");
+    expect("123456789".mask(start: 2, end: 7), "12*****89");
+    expect("123".toIntOrNull, 123);
+    expect("abc".toIntOrNull, isNull);
+    expect("12.5".toDoubleOrNull, 12.5);
+    expect("abc".toDoubleOrNull, isNull);
+    expect("hello world".toTitleCase, "Hello World");
+    expect("hello_world".toCamelCase, "helloWorld");
+    expect("helloWorld".toSnakeCase, "hello_world");
+
+    // ---- ExtNum & ExtMap ----
+    expect(1500.formatCompact(), "1.5K");
+    expect(25.percentOf(100), 25.0);
+    expect({"key": "value"}.getOr("missing", "default"), "default");
+
+    // ---- ExtWidget new helpers ----
+    expect(const Text("Card test").card(), isA<Card>());
+    expect(const Text("Unfocus test").unfocusOnTap(), isA<GestureDetector>());
+    expect(const Text("Shimmer test").shimmer(), isA<ShimmerWidget>());
+    expect(const Text("Expanded test").expandedIf(true), isA<Expanded>());
+    expect(const Text("Expanded test").expandedIf(false), isA<Text>());
+    expect(shrink, isA<SizedBox>());
 
     print("Done");
   });

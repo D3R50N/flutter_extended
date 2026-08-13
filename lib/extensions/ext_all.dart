@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_extended/widgets/styled_text.dart';
+import 'package:flutter_extended/flutter_extended.dart';
 
 extension ExtAll<T> on T {
   /// Returns `true` if this value exists in the given [list].
@@ -36,13 +36,16 @@ extension ExtAll<T> on T {
   /// Prints this value to the debug console with an optional [tag].
   ///
   /// The output is colorized (white) for better readability in logs.
+  /// If [FlutterExtended.debugFlag] is provided, it is prepended.
   ///
   /// Example:
   /// ```dart
   /// user.debug('UserState');
   /// ```
   void debug([String? tag]) {
-    debugPrint('\x1B[37m[${tag ?? runtimeType}] $this\x1B[0m');
+    final flag = FlutterExtended.debugFlag;
+    final flagPrefix = flag != null && flag.isNotEmpty ? '[$flag]' : '';
+    debugPrint('\x1B[37m$flagPrefix[${tag ?? runtimeType}] $this\x1B[0m');
   }
 
   /// Wraps the string in a standard [Text] widget.

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart' as intl;
 
 extension ExtNum on num {
   /// Converts this number into a vertical or horizontal gap widget.
@@ -19,7 +20,30 @@ extension ExtNum on num {
   Border border({Color color = Colors.black}) =>
       Border.all(color: color, width: toDouble());
 
-  
+  /// Converts this number into a vertical SizedBox.
+  ///
+  /// Example:
+  /// ```dart
+  /// 16.h; // Equivalent to SizedBox(height: 16.0)
+  /// ```
+  Widget get h => SizedBox(height: toDouble());
+
+  /// Converts this number into a horizontal SizedBox.
+  ///
+  /// Example:
+  /// ```dart
+  /// 16.w; // Equivalent to SizedBox(width: 16.0)
+  /// ```
+  Widget get w => SizedBox(width: toDouble());
+
+  /// Creates uniform [EdgeInsets] with this number.
+  EdgeInsets get allPadding => EdgeInsets.all(toDouble());
+
+  /// Creates horizontal [EdgeInsets] with this number.
+  EdgeInsets get hPadding => EdgeInsets.symmetric(horizontal: toDouble());
+
+  /// Creates vertical [EdgeInsets] with this number.
+  EdgeInsets get vPadding => EdgeInsets.symmetric(vertical: toDouble());
 
   /// Returns this number clamped to a minimum value [min].
   num clampMin(num min) => this < min ? min : this;
@@ -86,5 +110,21 @@ extension ExtNum on num {
   double roundTo(int decimals) {
     final f = pow(10, decimals);
     return (this * f).round() / f;
+  }
+
+  /// Formats this number into a compact string (e.g. 1.2K, 3.4M).
+  String formatCompact([String? locale]) {
+    return intl.NumberFormat.compact(locale: locale).format(this);
+  }
+
+  /// Calculates the percentage this number represents of [total].
+  ///
+  /// Example:
+  /// ```dart
+  /// 25.percentOf(100); // 25.0
+  /// ```
+  double percentOf(num total) {
+    if (total == 0) return 0.0;
+    return (this / total) * 100;
   }
 }

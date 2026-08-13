@@ -21,6 +21,56 @@ extension ExtContext on BuildContext {
   /// Shortcut to access the current [ThemeData].
   ThemeData get theme => Theme.of(this);
 
+  /// Shortcut to access primary color from theme.
+  Color get primaryColor => colorScheme.primary;
+
+  /// Shortcut to access scaffold background color from theme.
+  Color get backgroundColor => theme.scaffoldBackgroundColor;
+
+  /// Shortcut to access the current [ColorScheme].
+  ColorScheme get colorScheme => theme.colorScheme;
+
+  /// Shortcut to access the current [TextTheme].
+  TextTheme get textTheme => theme.textTheme;
+
+  /// Returns `true` if current brightness is dark.
+  bool get isDarkMode => theme.brightness == Brightness.dark;
+
+  /// Shortcut to access padding from [MediaQueryData].
+  EdgeInsets get padding => media.padding;
+
+  /// Shortcut to access view insets from [MediaQueryData].
+  EdgeInsets get viewInsets => media.viewInsets;
+
+  /// Returns `true` if screen orientation is portrait.
+  bool get isPortrait => media.orientation == Orientation.portrait;
+
+  /// Returns `true` if screen orientation is landscape.
+  bool get isLandscape => media.orientation == Orientation.landscape;
+
+  /// Returns `true` if screen width is smaller than 600px (mobile).
+  bool get isMobile => w < 600;
+
+  /// Returns `true` if screen width is between 600px and 1024px (tablet).
+  bool get isTablet => w >= 600 && w < 1024;
+
+  /// Returns `true` if screen width is 1024px or larger (desktop).
+  bool get isDesktop => w >= 1024;
+
+  /// Returns a responsive value based on screen width.
+  T responsive<T>({
+    required T mobile,
+    T? tablet,
+    T? desktop,
+  }) {
+    if (isDesktop && desktop != null) return desktop;
+    if (isTablet && tablet != null) return tablet;
+    return mobile;
+  }
+
+  /// Returns `true` if on-screen keyboard is visible.
+  bool get isKeyboardOpen => viewInsets.bottom > 0;
+
   /// Pushes a new page onto the navigation stack.
   ///
   /// If [safe] is enabled, the navigation will be skipped when the
@@ -268,6 +318,33 @@ extension ExtContext on BuildContext {
       },
     );
   }
+
+  /// Displays a modal bottom sheet with the given [child].
+  Future<T?> showModalSheet<T>({
+    required Widget child,
+    bool isDismissible = true,
+    bool enableDrag = true,
+    bool isScrollControlled = false,
+    Color? backgroundColor,
+    double? elevation,
+    ShapeBorder? shape,
+    Clip? clipBehavior,
+  }) {
+    return showModalBottomSheet<T>(
+      context: this,
+      isDismissible: isDismissible,
+      enableDrag: enableDrag,
+      isScrollControlled: isScrollControlled,
+      backgroundColor: backgroundColor,
+      elevation: elevation,
+      shape: shape,
+      clipBehavior: clipBehavior,
+      builder: (_) => child,
+    );
+  }
+
+  /// Unfocuses any currently focused text field in the current tree.
+  void unfocus() => FocusScope.of(this).unfocus();
 
   /// Returns `true` if this route is the current active route.
   bool get isCurrent => ModalRoute.of(this)?.isCurrent ?? false;

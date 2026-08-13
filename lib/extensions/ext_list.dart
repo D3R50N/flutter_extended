@@ -109,6 +109,16 @@ extension ExtList<T> on List<T> {
     out += "$remaining $suffix";
     return out;
   }
+
+  /// Splits this list into chunks of the given [size].
+  List<List<T>> chunk(int size) {
+    if (size <= 0) return [this];
+    final chunks = <List<T>>[];
+    for (var i = 0; i < length; i += size) {
+      chunks.add(sublist(i, min(i + size, length)));
+    }
+    return chunks;
+  }
 }
 
 extension IterableExt<T> on Iterable<T> {
@@ -284,6 +294,17 @@ extension ExtListWidget on List<Widget> {
       ],
     );
   }
+
+  /// Returns a new list of widgets separated by [separator].
+  List<Widget> separated(Widget separator) {
+    if (isEmpty) return [];
+    final result = <Widget>[];
+    for (var i = 0; i < length; i++) {
+      if (i > 0) result.add(separator);
+      result.add(this[i]);
+    }
+    return result;
+  }
 }
 
 extension ExtItNum<T extends num> on Iterable<T> {
@@ -295,6 +316,17 @@ extension ExtItNum<T extends num> on Iterable<T> {
   /// ```
   num sum() {
     return fold(0, (prev, el) => prev + el);
+  }
+
+  /// Returns the average of all elements in the iterable.
+  ///
+  /// Example:
+  /// ```dart
+  /// [1, 2, 3].average(); // 2.0
+  /// ```
+  double average() {
+    if (isEmpty) return 0.0;
+    return sum() / length;
   }
 
   /// Returns the maximum value in the iterable.

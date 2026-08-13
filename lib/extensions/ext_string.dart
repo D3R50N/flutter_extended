@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_extended/utils/color.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:url_launcher/url_launcher.dart';
@@ -25,11 +25,108 @@ extension ExtString on String {
       .replaceAll(RegExp(r'-+'), '-')
       .replaceAll(RegExp(r'^-|-$'), '');
 
+  /// Checks if the string matches a valid email pattern.
+  bool get isEmail {
+    final emailPattern = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
+    return emailPattern.hasMatch(trim());
+  }
+
+  /// Checks if the string matches a valid phone number pattern.
+  bool get isPhone {
+    final phonePattern = RegExp(r'^\+?[0-9\s\-()]{7,20}$');
+    return phonePattern.hasMatch(trim());
+  }
+
+  /// Copies this string to the system clipboard.
+  Future<void> copyToClipboard() async {
+    await Clipboard.setData(ClipboardData(text: this));
+  }
+
+  /// Extracts initials from words in this string (e.g. "John Doe" -> "JD").
+  String get initials {
+    if (isBlank) return '';
+    final words = trim().split(RegExp(r'\s+'));
+    if (words.isEmpty) return '';
+    if (words.length == 1) {
+      return words.first.substring(0, words.first.length.clamp(0, 2)).toUpperCase();
+    }
+    return '${words.first[0]}${words.last[0]}'.toUpperCase();
+  }
+
   /// Converts the string to an integer.
   int get toInt => int.parse(this);
 
+  /// Parses this string as an integer, or returns `null` if invalid.
+  int? get toIntOrNull => int.tryParse(trim());
+
   /// Converts the string to a double.
   double get toDouble => double.parse(this);
+
+  /// Parses this string as a double, or returns `null` if invalid.
+  double? get toDoubleOrNull => double.tryParse(trim());
+
+  /// Masks characters from [start] to [end] with [maskChar].
+  ///
+  /// Example:
+  /// ```dart
+  /// "123456789".mask(start: 2, end: 7); // "12*****89"
+  /// ```
+  String mask({int start = 0, int? end, String maskChar = '*'}) {
+    if (isEmpty) return '';
+    final actualEnd = (end ?? length).clamp(0, length);
+    final actualStart = start.clamp(0, actualEnd);
+    final prefix = substring(0, actualStart);
+    final masked = maskChar * (actualEnd - actualStart);
+    final suffix = substring(actualEnd);
+    return '$prefix$masked$suffix';
+  }
+
+  /// Converts string to Title Case (e.g. "hello world" -> "Hello World").
+  String get toTitleCase {
+    if (isBlank) return '';
+    return trim()
+        .split(RegExp(r'\s+'))
+        .map(
+          (word) =>
+              word.isEmpty
+                  ? ''
+                  : word[0].toUpperCase() + word.substring(1).toLowerCase(),
+        )
+        .join(' ');
+  }
+
+  /// Converts string to camelCase (e.g. "hello_world" -> "helloWorld").
+  String get toCamelCase {
+    if (isBlank) return '';
+    final words = trim().split(RegExp(r'[\s_\-]+'));
+    if (words.isEmpty) return '';
+    final first = words.first.toLowerCase();
+    final rest =
+        words
+            .skip(1)
+            .map(
+              (w) =>
+                  w.isEmpty
+                      ? ''
+                      : w[0].toUpperCase() + w.substring(1).toLowerCase(),
+            )
+            .join();
+    return '$first$rest';
+  }
+
+  /// Converts string to snake_case (e.g. "helloWorld" -> "hello_world").
+  String get toSnakeCase {
+    if (isBlank) return '';
+    return trim()
+        .replaceAllMapped(
+          RegExp(r'([a-z0-9])([A-Z])'),
+          (m) => '${m[1]}_${m[2]}',
+        )
+        .replaceAll(RegExp(r'[\s\-]+'), '_')
+        .toLowerCase();
+  }
 
   /// Removes accents from the string.
   String get noAccent {

@@ -3,6 +3,7 @@ import 'dart:ui' show ImageFilter;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_extended/utils/color.dart';
+import 'package:flutter_extended/widgets/shimmer.dart';
 
 export 'ext_textstyle.dart';
 
@@ -50,6 +51,10 @@ extension ExtWidget on Widget {
 
   /// Wraps this widget with [Expanded] with optional [flex].
   Widget expanded({int flex = 1}) => Expanded(flex: flex, child: this);
+
+  /// Wraps this widget with [Expanded] if [condition] is `true`, otherwise returns this widget.
+  Widget expandedIf(bool condition, {int flex = 1}) =>
+      condition ? Expanded(flex: flex, child: this) : this;
 
   /// Wraps this widget with [Flexible] with optional [flex] and [fit].
   Widget flexible({int flex = 1, FlexFit fit = FlexFit.loose}) =>
@@ -284,6 +289,126 @@ extension ExtWidget on Widget {
         highlightColor: Colors.transparent,
         child: this,
       ),
+    );
+  }
+
+  /// Wraps this widget in a [Hero] with the given [tag].
+  Widget hero(
+    Object tag, {
+    CreateRectTween? createRectTween,
+    HeroFlightShuttleBuilder? flightShuttleBuilder,
+    HeroPlaceholderBuilder? placeholderBuilder,
+    bool transitionOnUserGestures = false,
+  }) {
+    return Hero(
+      tag: tag,
+      createRectTween: createRectTween,
+      flightShuttleBuilder: flightShuttleBuilder,
+      placeholderBuilder: placeholderBuilder,
+      transitionOnUserGestures: transitionOnUserGestures,
+      child: this,
+    );
+  }
+
+  /// Wraps this widget in a [Tooltip].
+  Widget tooltip(
+    String message, {
+    Decoration? decoration,
+    BoxConstraints? constraints,
+    EdgeInsetsGeometry? padding,
+    TextStyle? textStyle,
+    Duration? waitDuration,
+    Duration? showDuration,
+  }) {
+    return Tooltip(
+      message: message,
+      decoration: decoration,
+      constraints: constraints,
+      padding: padding,
+      textStyle: textStyle,
+      waitDuration: waitDuration,
+      showDuration: showDuration,
+      child: this,
+    );
+  }
+
+  /// Wraps this widget in a [SingleChildScrollView].
+  Widget scrollable({
+    Axis scrollDirection = Axis.vertical,
+    bool reverse = false,
+    EdgeInsetsGeometry? padding,
+    bool? primary,
+    ScrollPhysics? physics,
+    ScrollController? controller,
+    DragStartBehavior dragStartBehavior = DragStartBehavior.start,
+    Clip clipBehavior = Clip.hardEdge,
+    String? restorationId,
+    ScrollViewKeyboardDismissBehavior keyboardDismissBehavior =
+        ScrollViewKeyboardDismissBehavior.manual,
+  }) {
+    return SingleChildScrollView(
+      scrollDirection: scrollDirection,
+      reverse: reverse,
+      padding: padding,
+      primary: primary,
+      physics: physics,
+      controller: controller,
+      dragStartBehavior: dragStartBehavior,
+      clipBehavior: clipBehavior,
+      restorationId: restorationId,
+      keyboardDismissBehavior: keyboardDismissBehavior,
+      child: this,
+    );
+  }
+
+  /// Wraps this widget in a [Card].
+  Widget card({
+    Color? color,
+    Color? shadowColor,
+    Color? surfaceTintColor,
+    double? elevation,
+    ShapeBorder? shape,
+    bool borderOnForeground = true,
+    EdgeInsetsGeometry? margin,
+    Clip? clipBehavior,
+    bool semanticContainer = true,
+  }) {
+    return Card(
+      color: color,
+      shadowColor: shadowColor,
+      surfaceTintColor: surfaceTintColor,
+      elevation: elevation,
+      shape: shape,
+      borderOnForeground: borderOnForeground,
+      margin: margin,
+      clipBehavior: clipBehavior,
+      semanticContainer: semanticContainer,
+      child: this,
+    );
+  }
+
+  /// Wraps this widget in a [GestureDetector] that unfocuses the current keyboard/focus on tap.
+  Widget unfocusOnTap() {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: this,
+    );
+  }
+
+  /// Wraps this widget in a shimmer loading effect when [isLoading] is true.
+  Widget shimmer({
+    bool isLoading = true,
+    Color baseColor = const Color(0xFFE0E0E0),
+    Color highlightColor = const Color(0xFFF5F5F5),
+    Duration duration = const Duration(milliseconds: 1500),
+  }) {
+    return ShimmerWidget(
+      isLoading: isLoading,
+      baseColor: baseColor,
+      highlightColor: highlightColor,
+      duration: duration,
+      child: this,
     );
   }
 

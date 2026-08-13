@@ -16,5 +16,13 @@ export 'extensions/ext_textstyle.dart';
 export 'extensions/ext_widget.dart';
 export 'utils/color.dart';
 export 'widgets/alert_dialog.dart';
+export 'widgets/shimmer.dart';
+export 'widgets/shrink.dart';
 export 'widgets/sliver.dart';
 export 'widgets/styled_text.dart';
+
+/// Global configuration for `flutter_extended`.
+abstract final class FlutterExtended {
+  /// Global flag/tag printed by `ExtAll.debug`.
+  static String? debugFlag;
+}
